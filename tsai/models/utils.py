@@ -161,9 +161,11 @@ def build_ts_model(arch, c_in=None, c_out=None, seq_len=None, d=None, dls=None, 
                                  fusion_layers=fusion_layers, fusion_act=fusion_act, fusion_dropout=fusion_dropout, fusion_use_bn=fusion_use_bn,
                                  **kwargs)
     else:
-        if d and arch.__name__ not in ["PatchTST", "PatchTSTPlus", 'TransformerRNNPlus', 'TransformerLSTMPlus', 'TransformerGRUPlus']:
+        if d and arch.__name__ not in ["PatchTST", "PatchTSTPlus", 'TransformerRNNPlus', 'TransformerLSTMPlus', 'TransformerGRUPlus', 
+        "RNN_FCNPlus", "LSTM_FCNPlus", "GRU_FCNPlus", "MRNN_FCNPlus", "MLSTM_FCNPlus", "MGRU_FCNPlus", 
+        "RNNAttentionPlus", "LSTMAttentionPlus", "GRUAttentionPlus", "ConvTran", "ConvTranPlus"]:
             if 'custom_head' not in kwargs.keys(): 
-                if "rocket" in arch.__name__.lower():
+                if "rocket" in arch.__name__.lower() or 'hydra' in arch.__name__.lower():
                     kwargs['custom_head'] = partial(rocket_nd_head, d=d)
                 elif "xresnet1d" in arch.__name__.lower():
                     kwargs["custom_head"] = partial(xresnet1d_nd_head, d=d)
@@ -174,12 +176,14 @@ def build_ts_model(arch, c_in=None, c_out=None, seq_len=None, d=None, dls=None, 
         if 'ltsf_' in arch.__name__.lower() or 'patchtst' in arch.__name__.lower():
             pv(f'arch: {arch.__name__}(c_in={c_in} c_out={c_out} seq_len={seq_len} pred_dim={d} arch_config={arch_config}, kwargs={kwargs})', verbose)
             model = (arch(c_in=c_in, c_out=c_out, seq_len=seq_len, pred_dim=d, **arch_config, **kwargs)).to(device=device)
-        elif arch.__name__ in ['TransformerRNNPlus', 'TransformerLSTMPlus', 'TransformerGRUPlus']:
+        elif arch.__name__ in ['TransformerRNNPlus', 'TransformerLSTMPlus', 'TransformerGRUPlus', "RNN_FCNPlus", "LSTM_FCNPlus", "GRU_FCNPlus", "MRNN_FCNPlus", 
+        "MLSTM_FCNPlus", "MGRU_FCNPlus", "RNNAttentionPlus", "LSTMAttentionPlus", "GRUAttentionPlus", "ConvTran", "ConvTranPlus"]:
             pv(f'arch: {arch.__name__}(c_in={c_in} c_out={c_out} seq_len={seq_len} d={d} arch_config={arch_config}, kwargs={kwargs})', verbose)
             model = (arch(c_in=c_in, c_out=c_out, seq_len=seq_len, d=d, **arch_config, **kwargs)).to(device=device)
         elif sum([1 for v in ['RNN_FCN', 'LSTM_FCN', 'RNNPlus', 'LSTMPlus', 'GRUPlus', 'InceptionTime', 'TSiT', 'Sequencer', 'XceptionTimePlus',
                             'GRU_FCN', 'OmniScaleCNN', 'mWDN', 'TST', 'XCM', 'MLP', 'MiniRocket', 'InceptionRocket', 'ResNetPlus', 
-                            'RNNAttention', 'LSTMAttention', 'GRUAttention', 'MultiRocket', 'MultiRocketPlus']
+                            'RNNAttention', 'LSTMAttention', 'GRUAttention', 'MultiRocket', 'MultiRocketPlus', 'Hydra', 'HydraPlus', 
+                            'HydraMultiRocket', 'HydraMultiRocketPlus']
                 if v in arch.__name__]):
             pv(f'arch: {arch.__name__}(c_in={c_in} c_out={c_out} seq_len={seq_len} arch_config={arch_config} kwargs={kwargs})', verbose)
             model = arch(c_in, c_out, seq_len=seq_len, **arch_config, **kwargs).to(device=device)
