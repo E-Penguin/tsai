@@ -169,7 +169,7 @@ def TrainValidTestSplitter(n_splits:int=1, valid_size:Union[float, int]=0.2, tes
     return _inner
 
 # %% ../../nbs/003_data.validation.ipynb 13
-def plot_splits(splits):
+def plot_splits(splits, return_figure=False):
     _max = 0
     _splits = 0
     for i, split in enumerate(splits):
@@ -190,7 +190,7 @@ def plot_splits(splits):
     vals = np.unique(v)
     if 2 in vals and 3 not in vals:
         vals = [v + 1 if v == 2 else v for v in vals]
-    plt.figure(figsize=(16, len(_splits)/2))
+    fig = plt.figure(figsize=(16, len(_splits)/2))
     if len(vals) == 1:
         v = np.ones((len(_splits), _max + 1))
         plt.pcolormesh(v, color='blue')
@@ -210,11 +210,13 @@ def plot_splits(splits):
     plt.yticks(ticks=np.arange(.5, len(_splits)+.5, 1.0), labels=np.arange(1, len(_splits)+1, 1.0).astype(int))
     plt.gca().invert_yaxis()
     plt.show()
+    
+    return fig if return_figure
 
 # %% ../../nbs/003_data.validation.ipynb 14
 def get_splits(o, n_splits:int=1, valid_size:float=0.2, test_size:float=0., train_only:bool=False, train_size:Union[None, float, int]=None, balance:bool=False,
                strategy:str="oversample", shuffle:bool=True, stratify:bool=True, check_splits:bool=True, random_state:Union[None, int]=None, 
-               show_plot:bool=True, verbose:bool=False):
+               show_plot:bool=True, verbose:bool=False, return_figure:bool=False):
     '''Arguments: 
         o            : object to which splits will be applied, usually target.
         n_splits     : number of folds. Must be an int >= 1.
@@ -276,8 +278,10 @@ def get_splits(o, n_splits:int=1, valid_size:float=0.2, test_size:float=0., trai
                 if valid_size != 0: splits[1] = splits[0]
                 if test_size != 0: splits[2] = splits[0]
             splits = tuple(splits)
-    if show_plot: plot_splits(splits)
-    return splits
+    if show_plot: fig = plot_splits(splits, return_figure)
+    
+    if return_figure : return splits, fig
+    else return splits
 
 # %% ../../nbs/003_data.validation.ipynb 17
 def get_walk_forward_splits(
