@@ -225,12 +225,14 @@ def plot_metrics(self: Recorder, nrows=None, ncols=None, figsize=None, final_los
         axs[ax_idx].set_title(title)
         axs[ax_idx].grid(color='gainsboro', linewidth=.5)
     plt.show()
+ 
+    return fig
     
     
 @patch
 @delegates(subplots)
 def plot_metrics(self: Learner, **kwargs):
-    self.recorder.plot_metrics(**kwargs)
+    return self.recorder.plot_metrics(**kwargs)
 
 # %% ../nbs/018_learner.ipynb 13
 all_arch_names =  ['FCN', 'FCNPlus', 'InceptionTime', 'InceptionTimePlus', 'InCoordTime', 'XCoordTime', 'InceptionTimePlus17x17', 'InceptionTimePlus32x32', 
