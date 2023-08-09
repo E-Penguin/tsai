@@ -190,7 +190,7 @@ def plot_splits(splits, return_figure:bool=False):
     vals = np.unique(v)
     if 2 in vals and 3 not in vals:
         vals = [v + 1 if v == 2 else v for v in vals]
-    plt.figure(figsize=(16, len(_splits)/2))
+    fig = plt.figure(figsize=(16, len(_splits)/2))
     if len(vals) == 1:
         v = np.ones((len(_splits), _max + 1))
         plt.pcolormesh(v, color='blue')
