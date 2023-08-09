@@ -55,8 +55,11 @@ def show_probas(self:Learner, figsize=(6,6), ds_idx=1, dl=None, one_batch=False,
     plt.xlabel('Probability', fontsize=12)
     plt.ylabel('True class', fontsize=12)
     plt.grid(axis='x', color='gainsboro', linewidth=.2)
+    fig = plt.gcf()
     plt.show()
     self.recorder = recorder
+    
+    return fig
 
 # %% ../nbs/020_analysis.ipynb 5
 @patch
@@ -100,6 +103,9 @@ def plot_confusion_matrix(self:Learner, ds_idx=1, dl=None, thr=.5, normalize=Fal
         plt.ylabel('Actual', fontsize=fontsize)
         plt.xlabel('Predicted', fontsize=fontsize)
         plt.grid(False)
+        
+        fig = plt.gcf()
+        return fig
 
 # %% ../nbs/020_analysis.ipynb 6
 @patch
