@@ -224,6 +224,8 @@ def plot_metrics(self: Recorder, nrows=None, ncols=None, figsize=None, final_los
         axs[ax_idx].legend(loc='best')
         axs[ax_idx].set_title(title)
         axs[ax_idx].grid(color='gainsboro', linewidth=.5)
+    
+    fig = plt.gcf()
     plt.show()
  
     return fig
