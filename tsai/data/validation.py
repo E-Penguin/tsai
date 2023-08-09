@@ -190,7 +190,7 @@ def plot_splits(splits, return_figure:bool=False):
     vals = np.unique(v)
     if 2 in vals and 3 not in vals:
         vals = [v + 1 if v == 2 else v for v in vals]
-    fig = plt.figure(figsize=(16, len(_splits)/2))
+    plt.figure(figsize=(16, len(_splits)/2))
     if len(vals) == 1:
         v = np.ones((len(_splits), _max + 1))
         plt.pcolormesh(v, color='blue')
@@ -209,6 +209,7 @@ def plot_splits(splits, return_figure:bool=False):
     plt.title('Split distribution')
     plt.yticks(ticks=np.arange(.5, len(_splits)+.5, 1.0), labels=np.arange(1, len(_splits)+1, 1.0).astype(int))
     plt.gca().invert_yaxis()
+    fig = plt.gcf()
     plt.show()
     
     if return_figure : return fig 
